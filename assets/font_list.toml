@@ -1,0 +1,480 @@
+[[entry]]
+filepath = "./桜/02_uヴュー(12)/UビューEnexus.ttf"
+display-name = "UビューEnexus"
+name = "uVeiwEnexus"
+
+[[entry]]
+filepath = "./桜/02_uヴュー(12)/UビューRdisplay.ttf"
+display-name = "UビューRdsp"
+name = "uVeiwRdisplay"
+
+[[entry]]
+filepath = "./桜/02_uヴュー(12)/UビューE.ttf"
+display-name = "UビューE"
+name = "uVeiwE"
+
+[[entry]]
+filepath = "./桜/02_uヴュー(12)/UビューR.ttf"
+display-name = "UビューR"
+name = "uVeiwR"
+
+[[entry]]
+filepath = "./桜/02_uヴュー(12)/UビューELnexus.ttf"
+display-name = "UビューELnexus"
+name = "uVeiwELnexus"
+
+[[entry]]
+filepath = "./桜/02_uヴュー(12)/UビューDB.ttf"
+display-name = "UビューDB"
+name = "uVeiwDB"
+
+[[entry]]
+filepath = "./桜/02_uヴュー(12)/UビューRnexus.ttf"
+display-name = "UビューRnexus"
+name = "uVeiwRnexus"
+
+[[entry]]
+filepath = "./桜/02_uヴュー(12)/UビューDBdisplay.ttf"
+display-name = "UビューDBdsp"
+name = "uVeiwDBdisplay"
+
+[[entry]]
+filepath = "./桜/02_uヴュー(12)/UビューEL.ttf"
+display-name = "UビューEL"
+name = "uVeiwEL"
+
+[[entry]]
+filepath = "./桜/02_uヴュー(12)/UビューEdisplay.ttf"
+display-name = "UビューEdsp"
+name = "uVeiwEdisplay"
+
+[[entry]]
+filepath = "./桜/02_uヴュー(12)/UビューELdisplay.ttf"
+display-name = "UビューELdsp"
+name = "uVeiwELdisplay"
+
+[[entry]]
+filepath = "./桜/02_uヴュー(12)/UビューDBnexus.ttf"
+display-name = "UビューDBnexus"
+name = "uVeiwDBnexus"
+
+[[entry]]
+filepath = "./桜/10_ニューズ(4)/ニューズNexusL.ttf"
+display-name = "ニューズNexusL"
+name = "News-Nexus-L"
+
+[[entry]]
+filepath = "./桜/10_ニューズ(4)/ニューズR.ttf"
+display-name = "ニューズR"
+name = "News-R"
+
+[[entry]]
+filepath = "./桜/10_ニューズ(4)/ニューズL.ttf"
+display-name = "ニューズL"
+name = "News-L"
+
+[[entry]]
+filepath = "./桜/10_ニューズ(4)/ニューズNexusR.ttf"
+display-name = "ニューズNexusR"
+name = "News-Nexus-R"
+
+[[entry]]
+filepath = "./桜/05_クロス(4)/CrossE.ttf"
+name = "CrossE"
+
+[[entry]]
+filepath = "./桜/05_クロス(4)/CrossU.ttf"
+name = "CrossU"
+
+[[entry]]
+filepath = "./桜/05_クロス(4)/CrossUDP.ttf"
+name = "CrossUDP"
+
+[[entry]]
+filepath = "./桜/05_クロス(4)/CrossEDP.ttf"
+name = "CrossEDP"
+
+[[entry]]
+filepath = "./桜/06_たいぷ/たいぷ.ttf"
+display-name = "たいぷ"
+name = "type"
+
+[[entry]]
+filepath = "./桜/08_ラスク/ラスク.ttf"
+display-name = "ラスク"
+name = "Rusk"
+
+[[entry]]
+filepath = "./桜/01_セリフゴシック(2)/SFSelifGothicRE.ttf"
+name = "SFSelifGothicRE"
+
+[[entry]]
+filepath = "./桜/04_いすい/いすい.ttf"
+display-name = "いすい"
+name = "isui"
+
+[[entry]]
+filepath = "./桜/07_テンドゥ(4)/テンドゥEL.ttf"
+display-name = "テンドゥEL"
+name = "TenduexEL"
+
+[[entry]]
+filepath = "./桜/07_テンドゥ(4)/テンドゥR.ttf"
+display-name = "テンドゥR"
+name = "TenduexR"
+
+[[entry]]
+filepath = "./桜/07_テンドゥ(4)/テンドゥELdeep.ttf"
+display-name = "テンドゥELdeep"
+name = "TenduexELdeep"
+
+[[entry]]
+filepath = "./桜/07_テンドゥ(4)/テンドゥRdeep.ttf"
+display-name = "テンドゥRdeep"
+name = "TenduexRdeep"
+
+[[entry]]
+filepath = "./桜/03_ゴシック・ドゥ(12)/ゴシック・ドゥHDL_E.ttf"
+display-name = "ゴシック・ドゥHDL_E"
+name = "GothicDuex-HDL_E"
+
+[[entry]]
+filepath = "./桜/03_ゴシック・ドゥ(12)/ゴシック・ドゥNexus_E.ttf"
+display-name = "ゴシック・ドゥNexus_E"
+name = "GothicDuex-Nexus_E"
+
+[[entry]]
+filepath = "./桜/03_ゴシック・ドゥ(12)/ゴシック・ドゥNexus_R.ttf"
+display-name = "ゴシック・ドゥNexus_R"
+name = "GothicDuex-Nexus_R"
+
+[[entry]]
+filepath = "./桜/03_ゴシック・ドゥ(12)/ゴシック・ドゥNexus_D.ttf"
+display-name = "ゴシック・ドゥNexus_D"
+name = "GothicDuex-Nexus_D"
+
+[[entry]]
+filepath = "./桜/03_ゴシック・ドゥ(12)/ゴシック・ドゥM.ttf"
+display-name = "ゴシック・ドゥM"
+name = "GothicDuex-M"
+
+[[entry]]
+filepath = "./桜/03_ゴシック・ドゥ(12)/ゴシック・ドゥRE.ttf"
+display-name = "ゴシック・ドゥRE"
+name = "GothicDuex-RE"
+
+[[entry]]
+filepath = "./桜/03_ゴシック・ドゥ(12)/ゴシック・ドゥL.ttf"
+display-name = "ゴシック・ドゥL"
+name = "GothicDuex-L"
+
+[[entry]]
+filepath = "./桜/03_ゴシック・ドゥ(12)/ゴシック・ドゥNexus_L.ttf"
+display-name = "ゴシック・ドゥNexus_L"
+name = "GothicDuex-Nexus_L"
+
+[[entry]]
+filepath = "./桜/03_ゴシック・ドゥ(12)/ゴシック・ドゥNexus_M.ttf"
+display-name = "ゴシック・ドゥNexus_M"
+name = "GothicDuex-Nexus_M"
+
+[[entry]]
+filepath = "./桜/03_ゴシック・ドゥ(12)/ゴシック・ドゥD.ttf"
+display-name = "ゴシック・ドゥD"
+name = "GothicDuex-D"
+
+[[entry]]
+filepath = "./桜/03_ゴシック・ドゥ(12)/ゴシック・ドゥR.ttf"
+display-name = "ゴシック・ドゥR"
+name = "GothicDuex-R"
+
+[[entry]]
+filepath = "./桜/03_ゴシック・ドゥ(12)/ゴシック・ドゥE.ttf"
+display-name = "ゴシック・ドゥE"
+name = "GothicDuex-E"
+
+[[entry]]
+filepath = "./雪月花/TAユニバーサルライン_DSP_R.ttf"
+display-name = "TAユニバーサルライン_DSP_R"
+name = "TA-UniversalLine-DSP-R"
+
+[[entry]]
+filepath = "./雪月花/TAユニバーサルライン_DSP_E.ttf"
+display-name = "TAユニバーサルライン_DSP_E"
+name = "TA-UniversalLine-DSP-E"
+
+[[entry]]
+filepath = "./雪月花/F66HandicH.ttf"
+name = "F66HandicH"
+
+[[entry]]
+filepath = "./雪月花/TAユニバーサルライン_DSP_D.ttf"
+display-name = "TAユニバーサルライン_DSP_D"
+name = "TA-UniversalLine-DSP-D"
+
+[[entry]]
+filepath = "./雪月花/TAミンニアムNexusM.ttf"
+display-name = "TAミンニアムNexusM"
+name = "TA_Minniam-Nexus-M"
+
+[[entry]]
+filepath = "./雪月花/limoneFitR.ttf"
+name = "LimoneFitR"
+
+[[entry]]
+filepath = "./雪月花/limoneB.ttf"
+name = "LimoneB"
+
+[[entry]]
+filepath = "./雪月花/TAミンニアムM.ttf"
+display-name = "TAミンニアムM"
+name = "TA_Minniam-M"
+
+[[entry]]
+filepath = "./雪月花/limoneR.ttf"
+name = "LimoneR"
+
+[[entry]]
+filepath = "./雪月花/limoneFitB.ttf"
+name = "LimoneFitB"
+
+[[entry]]
+filepath = "./雪月花/TAユニバーサルライン_BDY_L.ttf"
+display-name = "TAユニバーサルライン_BDY_L"
+name = "TA-UniversalLine-BDY-L"
+
+[[entry]]
+filepath = "./雪月花/TAスクエアM.ttf"
+display-name = "TAスクエアM"
+name = "TA_Square-M"
+
+[[entry]]
+filepath = "./雪月花/F66Unsui.ttf"
+name = "F66Unsui"
+
+[[entry]]
+filepath = "./雪月花/F66WaffleE.ttf"
+name = "F66WaffleE"
+
+[[entry]]
+filepath = "./雪月花/TAミンニアムE.ttf"
+display-name = "TAミンニアムE"
+name = "TA_Minniam-E"
+
+[[entry]]
+filepath = "./雪月花/TAミンニアムR.ttf"
+display-name = "TAミンニアムR"
+name = "TA_Minniam-R"
+
+[[entry]]
+filepath = "./雪月花/F66WaffleEpetit.ttf"
+name = "F66WaffleEpetit"
+
+[[entry]]
+filepath = "./雪月花/F66WaffleU.ttf"
+name = "F66WaffleU"
+
+[[entry]]
+filepath = "./雪月花/TAユニバーサルライン_BDY_D.ttf"
+display-name = "TAユニバーサルライン_BDY_D"
+name = "TA-UniversalLine-BDY-D"
+
+[[entry]]
+filepath = "./雪月花/TAユニバーサルライン_BDY_R.ttf"
+display-name = "TAユニバーサルライン_BDY_R"
+name = "TA-UniversalLine-BDY-R"
+
+[[entry]]
+filepath = "./雪月花/TAスクエアD.ttf"
+display-name = "TAスクエアD"
+name = "TA_Square-D"
+
+[[entry]]
+filepath = "./雪月花/TAユニバーサルライン_LG_E.ttf"
+display-name = "TAユニバーサルライン_LG_E"
+name = "TA-UniversalLine-LG-E"
+
+[[entry]]
+filepath = "./雪月花/F66WaffleUForte.ttf"
+name = "F66WaffleUForte"
+
+[[entry]]
+filepath = "./雪月花/F66Selfish.ttf"
+name = "F66Selfish"
+
+[[entry]]
+filepath = "./雪月花/TAユニバーサルライン_DSP_L.ttf"
+display-name = "TAユニバーサルライン_DSP_L"
+name = "TA-UniversalLine-DSP-L"
+
+[[entry]]
+filepath = "./雪月花/TAミンニアムNexusR.ttf"
+display-name = "TAミンニアムNexusR"
+name = "TA_Minniam-Nexus-R"
+
+[[entry]]
+filepath = "./雪月花/TAミンニアムNexusE.ttf"
+display-name = "TAミンニアムNexusE"
+name = "TA_Minniam-Nexus-E"
+
+[[entry]]
+filepath = "./雪月花/F66Oboro.ttf"
+name = "F66Oboro"
+
+[[entry]]
+filepath = "./松/F66-Handic.ttf"
+name = "F66-Handic"
+
+[[entry]]
+filepath = "./松/F66オリーブRdance.ttf"
+name = "F66OliveRdance"
+
+[[entry]]
+filepath = "./松/F66FudeRyuuhou.ttf"
+display-name = "F66筆りゅうほう"
+name = "F66FudeRyuuhou"
+
+[[entry]]
+filepath = "./松/F66プランタンELpetit.ttf"
+name = "F66PrintempsELpetit"
+
+[[entry]]
+filepath = "./松/F66FudeRenjyou.ttf"
+display-name = "F66筆れんじょう"
+name = "F66FudeRenjyou"
+
+[[entry]]
+filepath = "./松/F66FudeMyouhon.ttf"
+display-name = "F66筆みょうほん"
+name = "F66FudeMyouhon"
+
+[[entry]]
+filepath = "./松/F66プランタンEpetit.ttf"
+name = "F66PrintempsEpetit"
+
+[[entry]]
+filepath = "./松/F66ElleminBpetit.ttf"
+name = "F66ElleminBpetit"
+
+[[entry]]
+filepath = "./松/F66MacaronR.ttf"
+name = "F66MacaronR"
+
+[[entry]]
+filepath = "./松/F66OliveBdance.ttf"
+name = "F66OliveBdance"
+
+[[entry]]
+filepath = "./松/F66FudeTaikei.ttf"
+display-name = "F66筆たいけい"
+name = "F66FudeTaikei"
+
+[[entry]]
+filepath = "./松/F66FudeHousen.ttf"
+display-name = "F66筆ほうせん"
+name = "F66FudeHousen"
+
+[[entry]]
+filepath = "./松/F66OliveR.ttf"
+name = "F66OliveR"
+
+[[entry]]
+filepath = "./松/F66MacaronRdance.ttf"
+name = "F66MacaronRdance"
+
+[[entry]]
+filepath = "./松/F66OliveEL.ttf"
+name = "F66OliveEL"
+
+[[entry]]
+filepath = "./松/F66MacaronB.ttf"
+name = "F66MacaronB"
+
+[[entry]]
+filepath = "./松/F66プランタンEL.ttf"
+name = "F66PrintempsEL"
+
+[[entry]]
+filepath = "./松/F66FudeReikou.ttf"
+display-name = "F66筆れいこう"
+name = "F66FudeReikou"
+
+[[entry]]
+filepath = "./松/F66OliveB.ttf"
+name = "F66OliveB"
+
+[[entry]]
+filepath = "./松/F66ElleminELpetit.ttf"
+name = "F66ElleminELpetit"
+
+[[entry]]
+filepath = "./松/F66-あらひつ.ttf"
+name = "F66-Arahitu"
+
+[[entry]]
+filepath = "./松/F66ElleminR.ttf"
+name = "F66ElleminR"
+
+[[entry]]
+filepath = "./松/F66プランタンDBpetit.ttf"
+name = "F66PrintempsDBpetit"
+
+[[entry]]
+filepath = "./松/F66MacaronBdance.ttf"
+name = "F66MacaronBdance"
+
+[[entry]]
+filepath = "./松/F66プランタンR.ttf"
+name = "F66PrintempsR"
+
+[[entry]]
+filepath = "./松/F66プランタンE.ttf"
+name = "F66PrintempsE"
+
+[[entry]]
+filepath = "./松/F66プランタンRpetit.ttf"
+name = "F66PrintempsRpetit"
+
+[[entry]]
+filepath = "./松/F66プランタンDB.ttf"
+name = "F66PrintempsDB"
+
+[[entry]]
+filepath = "./松/F66FudeKiyomizu.ttf"
+display-name = "F66筆きよみず"
+name = "F66FudeKiyomizu"
+
+[[entry]]
+filepath = "./松/F66MacaronELdance.ttf"
+name = "F66MacaronELdance"
+
+[[entry]]
+filepath = "./松/F66FudeSenkou.ttf"
+display-name = "F66筆せんこう"
+name = "F66FudeSenkou"
+
+[[entry]]
+filepath = "./松/F66ElleminB.ttf"
+name = "F66ElleminB"
+
+[[entry]]
+filepath = "./松/F66ElleminRpetit.ttf"
+name = "F66ElleminRpetit"
+
+[[entry]]
+filepath = "./松/F66OliveELdance.ttf"
+name = "F66OliveELdance"
+
+[[entry]]
+filepath = "./松/F66FudeMeigetu.ttf"
+display-name = "F66筆めいげつ"
+name = "F66FudeMeigetu"
+
+[[entry]]
+filepath = "./松/F66MacaronEL.ttf"
+name = "F66MacaronEL"
+
+[[entry]]
+filepath = "./松/F66FudeZuisen.ttf"
+display-name = "F66筆ずいせん"
+name = "F66FudeZuisen"
