@@ -13,14 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+use crate::model::FontEntry;
 
 #[cfg(test)]
 mod fake_font_list;
 
 mod font_list_impl;
 
-#[cfg(not(test))]
-pub type FontListRepository = font_list_impl::FontListRepositoryImpl;
+trait FontListDataSource {
+    fn find_all(&self) -> Vec<FontEntry>;
+}
 
-#[cfg(test)]
-pub type FontListRepository = fake_font_list::FakeFontListRepository;
+pub struct FontListRepository {
+    #[cfg(not(test))]
+    data_source: font_list_impl::FontListDataSourceImpl,
+
+    #[cfg(test)]
+    data_source: fake_font_list::FakeFontListDataSource,
+}
+
+impl FontListRepository {
+    pub fn find_all(&self) -> Vec<FontEntry> {
+        self.data_source.find_all()
+    }
+}
+
+impl Default for FontListRepository {
+    #[cfg(not(test))]
+    fn default() -> Self {
+        Self {
+            data_source: font_list_impl::FontListDataSourceImpl::new(),
+        }
+    }
+
+    #[cfg(test)]
+    fn default() -> Self {
+        Self {
+            data_source: fake_font_list::FakeFontListDataSource::new(),
+        }
+    }
+}

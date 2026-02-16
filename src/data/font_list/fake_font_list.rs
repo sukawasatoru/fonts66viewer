@@ -13,17 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+use crate::data::font_list::FontListDataSource;
 use crate::model::FontEntry;
 
-pub struct FakeFontListRepository;
+pub struct FakeFontListDataSource {
+    list: Vec<FontEntry>,
+}
 
-impl FakeFontListRepository {
+impl FakeFontListDataSource {
     pub fn new() -> Self {
-        Self
-    }
+        let mut list = vec![];
+        list.push(FontEntry {
+            filepath: "./arial.ttf".to_string(),
+            display_name: None,
+            font_name: "Arial",
+        });
 
-    pub fn find_all(&self) -> Vec<FontEntry> {
-        vec![]
+        Self { list }
+    }
+}
+
+impl FontListDataSource for FakeFontListDataSource {
+    fn find_all(&self) -> Vec<FontEntry> {
+        self.list.clone()
     }
 }

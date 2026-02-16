@@ -13,19 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #![windows_subsystem = "windows"]
 
-use fonts66viewer::app::{AppState, boot};
+use fonts66viewer::app::application;
 
 fn main() -> iced::Result {
     dotenv::dotenv().ok();
 
     tracing_subscriber::fmt::init();
 
-    iced::application(boot, AppState::update, AppState::view)
-        .title(AppState::title)
-        .subscription(AppState::subscription)
-        .theme(AppState::theme)
-        .run()
+    application().run()
 }

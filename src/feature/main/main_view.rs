@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 use crate::data::font_list::FontListRepository;
 use crate::model::FontEntry;
 use iced::widget::rule::horizontal;
@@ -22,9 +21,7 @@ use iced::{Element, Font, Length, Subscription, Task};
 use std::sync::Arc;
 
 #[derive(Clone, Debug)]
-pub enum MainViewCommand {
-    //
-}
+pub enum MainViewCommand {}
 
 pub struct MainView {
     font_entries: Vec<FontEntry>,
@@ -81,4 +78,28 @@ fn list_item<'a>(font_entry: &'a FontEntry, message: &'a str) -> Element<'a, Mai
                 .font(Font::with_name(font_entry.font_name)),
         )
         .into()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use iced::Theme;
+
+    #[test]
+    #[ignore = "snapshot testing"]
+    fn test_simulator() {
+        let main_view = MainView::new(Arc::new(FontListRepository::default()));
+
+        let mut simulator = iced_test::simulator(main_view.view());
+        let snapshot = simulator.snapshot(&Theme::Light).unwrap();
+        assert!(
+            snapshot
+                .matches_hash(concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/snapshots/main_view_launch"
+                ),)
+                .unwrap(),
+            "snapshot should match",
+        )
+    }
 }
