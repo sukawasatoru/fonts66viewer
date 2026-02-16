@@ -1,0 +1,46 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    strategy:
+      max-parallel: 3
+      matrix:
+        os:
+          - windows-latest
+          - macos-latest
+    # https://github.com/actions/virtual-environments#available-environments
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+      - run: cargo build --release
+      - if: ${{ matrix.os == 'windows-latest' }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: fonts66viewer-windows
+          path: target/release/fonts66viewer.exe
+          if-no-files-found: error
+      - if: ${{ matrix.os == 'macos-latest' }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: fonts66viewer-macos
+          path: target/release/fonts66viewer
+          if-no-files-found: error
+  rustfmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: rustup component add rustfmt
+      - run: cargo fmt
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: rustup component add clippy
+      - run: cargo clippy
+      - run: cargo test
+      - run: cargo test -- --ignored
