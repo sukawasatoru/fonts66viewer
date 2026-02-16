@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: fonts66viewer-macos
-          path: client/target/release/fonts66viewer
+          path: target/release/fonts66viewer
           if-no-files-found: error
   rustfmt:
     runs-on: ubuntu-latest
