@@ -34,11 +34,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - run: rustup component add rustfmt
       - run: cargo fmt
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - run: rustup component add clippy
       - run: cargo clippy
       - run: cargo test
       - run: cargo test -- --ignored
