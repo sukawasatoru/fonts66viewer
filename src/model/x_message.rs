@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-pub use font_entry::FontEntry;
-pub use x_message::XMessage;
-
-mod font_entry;
-mod x_message;
+#[derive(Clone, Debug)]
+pub enum XMessage {
+    Exit,
+}

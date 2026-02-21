@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 use crate::data::font_list::FontListRepository;
-use crate::model::FontEntry;
+use crate::model::{FontEntry, XMessage};
+use iced::keyboard::Key;
 use iced::widget::rule::horizontal;
 use iced::widget::{column, scrollable, text};
 use iced::{Element, Font, Length, Subscription, Task};
 use std::sync::Arc;
 
 #[derive(Clone, Debug)]
-pub enum MainViewCommand {}
+pub enum MainViewCommand {
+    SendXMessage(XMessage),
+    XMessage(XMessage),
+}
 
 pub struct MainView {
     font_entries: Vec<FontEntry>,
@@ -33,12 +37,22 @@ impl MainView {
         Self { font_entries }
     }
 
-    pub fn update(&mut self, _command: MainViewCommand) -> Task<MainViewCommand> {
-        Task::none()
+    pub fn update(&mut self, command: MainViewCommand) -> Task<MainViewCommand> {
+        match command {
+            // Propagate to App layer via Task so it can be converted to AppCommand::XMessage.
+            MainViewCommand::SendXMessage(data) => Task::done(MainViewCommand::SendXMessage(data)),
+            MainViewCommand::XMessage(_) => Task::none(),
+        }
     }
 
     pub fn subscription(&self) -> Subscription<MainViewCommand> {
-        Subscription::none()
+        iced::event::listen_with(|event, _status, _id| match event {
+            iced::Event::Keyboard(iced::keyboard::Event::KeyReleased {
+                key: Key::Named(iced::keyboard::key::Named::Escape),
+                ..
+            }) => Some(MainViewCommand::SendXMessage(XMessage::Exit)),
+            _ => None,
+        })
     }
 
     pub fn view(&self) -> Element<'_, MainViewCommand> {

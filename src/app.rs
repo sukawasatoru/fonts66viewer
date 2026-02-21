@@ -15,6 +15,7 @@
  */
 use crate::data::font_list::FontListRepository;
 use crate::feature::main::{MainView, MainViewCommand};
+use crate::model::XMessage;
 use iced::{Application, Element, Program, Subscription, Task, Theme};
 use std::sync::Arc;
 
@@ -39,6 +40,7 @@ fn boot() -> (AppState, Task<AppCommand>) {
 #[derive(Clone, Debug)]
 enum AppCommand {
     MainViewCommand(MainViewCommand),
+    XMessage(XMessage),
 }
 
 pub struct AppState {
@@ -53,10 +55,20 @@ impl AppState {
 
     fn update(&mut self, message: AppCommand) -> Task<AppCommand> {
         match message {
-            AppCommand::MainViewCommand(command) => self
-                .view_main
-                .update(command)
-                .map(AppCommand::MainViewCommand),
+            AppCommand::MainViewCommand(command) => {
+                self.view_main.update(command).map(|command| match command {
+                    MainViewCommand::SendXMessage(message) => AppCommand::XMessage(message),
+                    _ => AppCommand::MainViewCommand(command),
+                })
+            }
+            AppCommand::XMessage(message) => match message {
+                XMessage::Exit => iced::exit(),
+                #[allow(unreachable_patterns)]
+                _ => self
+                    .view_main
+                    .update(MainViewCommand::XMessage(message))
+                    .map(AppCommand::MainViewCommand),
+            },
         }
     }
 
