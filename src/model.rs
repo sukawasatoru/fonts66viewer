@@ -19,3 +19,7 @@ pub use x_message::XMessage;
 
 mod font_entry;
 mod x_message;
+
+pub const DEFAULT_SAMPLE_FONT_SIZE: u32 = 28;
+pub const TOOLBAR_HEIGHT: u32 = 36;
+pub const WINDOW_BODY_MARGIN: u32 = 8;

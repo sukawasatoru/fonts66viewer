@@ -23,11 +23,7 @@ pub struct FakeFontListDataSource {
 impl FakeFontListDataSource {
     pub fn new() -> Self {
         let mut list = vec![];
-        list.push(FontEntry {
-            filepath: "./arial.ttf".to_string(),
-            display_name: None,
-            font_name: "Arial",
-        });
+        list.push(FontEntry::new("./arial.ttf".to_string(), None, "Arial"));
 
         Self { list }
     }

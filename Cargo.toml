@@ -18,7 +18,10 @@ winres = "=0.1.12"
 [dependencies]
 anyhow = "=1.0.101"
 dotenv = "=0.15.0"
-iced = { version = "=0.14.0", features = ["svg", "tokio", "sipper"] }
+iced = { version = "=0.14.0", features = ["svg"] }
+iced_aw = { version = "=0.13.0", default-features = false, features = ["number_input"] }
+indexmap = "=2.13.0"
+rust-embed = { version = "=8.11.0", features = ["interpolate-folder-path"] }
 serde = { version = "=1.0.228", features = ["derive"] }
 toml = "=0.9.11"
 tracing = "=0.1.44"

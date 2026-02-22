@@ -13,10 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+use std::ops::Deref;
+use std::sync::Arc;
 
-#[derive(Clone)]
-pub struct FontEntry {
+#[derive(Clone, Debug)]
+pub struct FontEntry(Arc<InnerFontEntry>);
+
+impl FontEntry {
+    pub fn new(filepath: String, display_name: Option<String>, font_name: &'static str) -> Self {
+        Self(Arc::new(InnerFontEntry {
+            filepath,
+            display_name,
+            font_name,
+        }))
+    }
+}
+
+#[derive(Debug)]
+pub struct InnerFontEntry {
     pub filepath: String,
     pub display_name: Option<String>,
     pub font_name: &'static str,
+}
+
+impl Deref for FontEntry {
+    type Target = InnerFontEntry;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
 }

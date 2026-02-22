@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+use crate::asset::Asset;
 use crate::data::font_list::FontListDataSource;
 use crate::model::FontEntry;
 use serde::Deserialize;
+use std::str::from_utf8;
 
 #[derive(Default)]
 pub struct FontListDataSourceImpl {
@@ -24,19 +26,19 @@ pub struct FontListDataSourceImpl {
 
 impl FontListDataSourceImpl {
     pub fn new() -> Self {
-        let config_string = include_str!(concat!(
-            env!("CARGO_MANIFEST_DIR"),
-            "/assets/font_list.toml",
-        ));
+        let font_list = Asset::get("font_list.toml").expect("font_list.toml is not found");
+        let config_string = from_utf8(&font_list.data).expect("font_list.toml is not valid utf-8");
 
         let cache = toml::from_str::<FontListConfig>(config_string)
             .expect("font_list.toml is invalid")
             .entry
             .into_iter()
-            .map(|dto| FontEntry {
-                filepath: dto.filepath,
-                display_name: dto.display_name,
-                font_name: Box::leak(dto.name.into_boxed_str()),
+            .map(|dto| {
+                FontEntry::new(
+                    dto.filepath,
+                    dto.display_name,
+                    Box::leak(dto.name.into_boxed_str()),
+                )
             })
             .collect();
 

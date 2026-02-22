@@ -13,11 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+pub use settings_view::{SettingsView, SettingsViewCommand};
 
-pub mod app;
-pub mod asset;
-pub mod data;
-pub mod feature;
-pub mod model;
-pub mod prelude;
-pub mod widget;
+mod checkable_font_list_item;
+mod font_list_item;
+mod settings_view;

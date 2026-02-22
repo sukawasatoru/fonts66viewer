@@ -12,7 +12,7 @@ This guideline provides AI agents working on this codebase.
 
 ## Project Structure and Module Organization
 
-- assets/ アプリケーションにバンドルするリソースファイル
+- assets/ アプリケーションにバンドルするファイル
 - src/ アプリケーションのソースコード
 - snapshot/ snapshot テストで使用する hash ファイル
 - tests/ E2E テストで使用する .ice ファイル

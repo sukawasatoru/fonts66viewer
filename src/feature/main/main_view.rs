@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-use crate::data::font_list::FontListRepository;
-use crate::model::{FontEntry, XMessage};
-use iced::keyboard::Key;
+use crate::model::{DEFAULT_SAMPLE_FONT_SIZE, FontEntry, TOOLBAR_HEIGHT, XMessage};
 use iced::widget::rule::horizontal;
-use iced::widget::{column, scrollable, text};
+use iced::widget::{column, scrollable, space, text};
 use iced::{Element, Font, Length, Subscription, Task};
-use std::sync::Arc;
 
 #[derive(Clone, Debug)]
 pub enum MainViewCommand {
@@ -28,35 +25,48 @@ pub enum MainViewCommand {
 }
 
 pub struct MainView {
+    custom_text: String,
+    font_size: u32,
     font_entries: Vec<FontEntry>,
 }
 
 impl MainView {
-    pub fn new(font_list_repo: Arc<FontListRepository>) -> Self {
-        let font_entries = font_list_repo.find_all();
-        Self { font_entries }
+    pub fn new() -> Self {
+        Self {
+            custom_text: "".to_owned(),
+            font_size: DEFAULT_SAMPLE_FONT_SIZE,
+            font_entries: vec![],
+        }
     }
 
     pub fn update(&mut self, command: MainViewCommand) -> Task<MainViewCommand> {
         match command {
             // Propagate to App layer via Task so it can be converted to AppCommand::XMessage.
             MainViewCommand::SendXMessage(data) => Task::done(MainViewCommand::SendXMessage(data)),
-            MainViewCommand::XMessage(_) => Task::none(),
+            MainViewCommand::XMessage(message) => match message {
+                XMessage::CustomText(value) => {
+                    self.custom_text = value;
+                    Task::none()
+                }
+                XMessage::FontEntries(entries) => {
+                    self.font_entries = entries;
+                    Task::none()
+                }
+                XMessage::FontSize(size) => {
+                    self.font_size = size;
+                    Task::none()
+                }
+                _ => Task::none(),
+            },
         }
     }
 
     pub fn subscription(&self) -> Subscription<MainViewCommand> {
-        iced::event::listen_with(|event, _status, _id| match event {
-            iced::Event::Keyboard(iced::keyboard::Event::KeyReleased {
-                key: Key::Named(iced::keyboard::key::Named::Escape),
-                ..
-            }) => Some(MainViewCommand::SendXMessage(XMessage::Exit)),
-            _ => None,
-        })
+        Subscription::none()
     }
 
     pub fn view(&self) -> Element<'_, MainViewCommand> {
-        let mut content = column![];
+        let mut content = column![space().height(TOOLBAR_HEIGHT)];
 
         let mut first = true;
         for entry in &self.font_entries {
@@ -68,7 +78,12 @@ impl MainView {
 
             content = content.push(list_item(
                 entry,
-                "あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。",
+                self.font_size,
+                if self.custom_text.is_empty() {
+                    "あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。"
+                } else {
+                    &self.custom_text
+                },
              ));
         }
 
@@ -76,7 +91,17 @@ impl MainView {
     }
 }
 
-fn list_item<'a>(font_entry: &'a FontEntry, message: &'a str) -> Element<'a, MainViewCommand> {
+impl Default for MainView {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+fn list_item<'a>(
+    font_entry: &'a FontEntry,
+    font_size: u32,
+    message: &'a str,
+) -> Element<'a, MainViewCommand> {
     let content = column![];
 
     let content = match font_entry.display_name {
@@ -88,7 +113,7 @@ fn list_item<'a>(font_entry: &'a FontEntry, message: &'a str) -> Element<'a, Mai
         .push(text(font_entry.font_name))
         .push(
             text(message)
-                .size(28)
+                .size(font_size)
                 .font(Font::with_name(font_entry.font_name)),
         )
         .into()
@@ -97,12 +122,17 @@ fn list_item<'a>(font_entry: &'a FontEntry, message: &'a str) -> Element<'a, Mai
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::data::font_list::FontListRepository;
     use iced::Theme;
 
     #[test]
     #[ignore = "snapshot testing"]
     fn test_simulator() {
-        let main_view = MainView::new(Arc::new(FontListRepository::default()));
+        let font_entries = FontListRepository::default().find_all();
+        let mut main_view = MainView::new();
+        let _ = main_view.update(MainViewCommand::XMessage(XMessage::FontEntries(
+            font_entries,
+        )));
 
         let mut simulator = iced_test::simulator(main_view.view());
         let snapshot = simulator.snapshot(&Theme::Light).unwrap();

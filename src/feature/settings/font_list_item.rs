@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+use crate::model::FontEntry;
 
-pub mod app;
-pub mod asset;
-pub mod data;
-pub mod feature;
-pub mod model;
-pub mod prelude;
-pub mod widget;
+pub struct FontListItem {
+    pub enabled: bool,
+    pub font_entry: FontEntry,
+}

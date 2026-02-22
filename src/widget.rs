@@ -13,11 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+pub use settings_button::*;
 
-pub mod app;
-pub mod asset;
-pub mod data;
-pub mod feature;
-pub mod model;
-pub mod prelude;
-pub mod widget;
+mod settings_button;

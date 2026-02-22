@@ -13,8 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+use crate::model::FontEntry;
 
 #[derive(Clone, Debug)]
 pub enum XMessage {
-    Exit,
+    CustomText(String),
+    FontEntries(Vec<FontEntry>),
+    FontSize(u32),
+    Init,
+    SettingsClose,
+    SettingsOpen,
 }

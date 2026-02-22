@@ -1,5 +1,5 @@
 viewport: 1024x768
-mode: immediate
+mode: zen
 preset: Empty
 ---
 expect "Arial"
