@@ -15,11 +15,16 @@
  */
 
 pub use font_entry::FontEntry;
+pub use preferences::{Preferences, Preset};
+pub use sqlite_user_version::SQLiteUserVersion;
 pub use x_message::XMessage;
 
 mod font_entry;
+mod preferences;
+mod sqlite_user_version;
 mod x_message;
 
 pub const DEFAULT_SAMPLE_FONT_SIZE: u32 = 28;
+pub const SAVE_PREFS_DEBOUNCE_MILLIS: u64 = 15_000;
 pub const TOOLBAR_HEIGHT: u32 = 36;
 pub const WINDOW_BODY_MARGIN: u32 = 8;

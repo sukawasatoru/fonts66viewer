@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-use crate::model::FontEntry;
-use iced::window;
 
 #[derive(Clone, Debug)]
-pub enum XMessage {
-    CloseRequested(window::Id),
-    CustomText(String),
-    FontEntries(Vec<FontEntry>),
-    FontSize(u32),
-    Init,
-    SettingsClose,
-    SettingsOpen,
+pub struct Preferences {
+    pub presets: Vec<Preset>,
+}
+
+#[derive(Clone, Debug)]
+pub struct Preset {
+    pub name: String,
+    pub font_size: u32,
+    pub enable_paths: Vec<String>,
 }

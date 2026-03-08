@@ -24,6 +24,11 @@ impl FakeFontListDataSource {
     pub fn new() -> Self {
         let mut list = vec![];
         list.push(FontEntry::new("./arial.ttf".to_string(), None, "Arial"));
+        list.push(FontEntry::new(
+            "./times.ttf".to_string(),
+            None,
+            "Times New Roman",
+        ));
 
         Self { list }
     }

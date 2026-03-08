@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 use crate::data::font_list::FontListRepository;
+use crate::data::preferences::PreferencesRepository;
 use crate::feature::main::{MainView, MainViewCommand};
 use crate::feature::settings::{SettingsView, SettingsViewCommand};
 use crate::feature::toolbar::{Toolbar, ToolbarCommand};
 use crate::model::XMessage;
 use iced::keyboard;
 use iced::widget::{opaque, right, space, stack};
+use iced::window;
 use iced::{Application, Element, Program, Subscription, Task, Theme};
 use std::sync::Arc;
 
@@ -28,15 +30,22 @@ pub fn application() -> Application<impl Program<State = AppState, Message = App
         .title(AppState::title)
         .subscription(AppState::subscription)
         .theme(AppState::theme)
+        // Disable default close behavior so that window::close_requests()
+        // events reach the subscription, allowing each feature to save dirty
+        // state before the window is actually closed.
+        .exit_on_close_request(false)
 }
 
 fn boot() -> (AppState, Task<AppCommand>) {
+    let project_dirs = directories::ProjectDirs::from("com", "sukawasatoru", "Fonts66 Viewer")
+        .expect("no valid home directory");
     let font_list_repo = Arc::new(FontListRepository::default());
+    let prefs_repo = Arc::new(PreferencesRepository::new(&project_dirs));
 
     let state = AppState {
         expand_settings: false,
         view_main: MainView::new(),
-        view_settings: SettingsView::new(font_list_repo),
+        view_settings: SettingsView::new(font_list_repo, prefs_repo),
         view_toolbar: Toolbar::new(),
         theme: Theme::Light,
     };
@@ -46,7 +55,7 @@ fn boot() -> (AppState, Task<AppCommand>) {
 
 #[derive(Clone, Debug)]
 pub enum AppCommand {
-    Esc,
+    Esc(window::Id),
     MainViewCommand(MainViewCommand),
     SettingsViewCommand(SettingsViewCommand),
     ToolbarCommand(ToolbarCommand),
@@ -68,12 +77,12 @@ impl AppState {
 
     fn update(&mut self, message: AppCommand) -> Task<AppCommand> {
         match message {
-            AppCommand::Esc => {
+            AppCommand::Esc(id) => {
                 if self.expand_settings {
                     self.expand_settings = false;
                     Task::none()
                 } else {
-                    iced::exit()
+                    Task::done(AppCommand::XMessage(XMessage::CloseRequested(id)))
                 }
             }
             AppCommand::MainViewCommand(command) => {
@@ -98,28 +107,43 @@ impl AppState {
                         _ => AppCommand::ToolbarCommand(command),
                     })
             }
-            AppCommand::XMessage(message) => match message {
-                XMessage::SettingsClose => {
-                    self.expand_settings = false;
-                    Task::none()
+            AppCommand::XMessage(message) => {
+                match &message {
+                    XMessage::SettingsClose => {
+                        self.expand_settings = false;
+                    }
+                    XMessage::SettingsOpen => {
+                        self.expand_settings = true;
+                    }
+                    _ => {}
                 }
-                XMessage::SettingsOpen => {
-                    self.expand_settings = true;
-                    Task::none()
-                }
-                _ => Task::batch([
-                    self.view_main
-                        .update(MainViewCommand::XMessage(message.clone()))
-                        .map(AppCommand::MainViewCommand),
-                    self.view_settings
-                        .update(SettingsViewCommand::XMessage(message.clone()))
-                        .map(AppCommand::SettingsViewCommand),
-                    self.view_toolbar
-                        .update(ToolbarCommand::XMessage(message))
-                        .map(AppCommand::ToolbarCommand),
-                ]),
-            },
+
+                // After broadcasting CloseRequested to all features (so they
+                // can synchronously save dirty preferences), close the window.
+                let close_task = match &message {
+                    XMessage::CloseRequested(id) => window::close(*id),
+                    _ => Task::none(),
+                };
+
+                let tasks = self.broadcast_xmessage(message);
+
+                Task::batch([tasks, close_task])
+            }
         }
+    }
+
+    fn broadcast_xmessage(&mut self, message: XMessage) -> Task<AppCommand> {
+        Task::batch([
+            self.view_main
+                .update(MainViewCommand::XMessage(message.clone()))
+                .map(AppCommand::MainViewCommand),
+            self.view_settings
+                .update(SettingsViewCommand::XMessage(message.clone()))
+                .map(AppCommand::SettingsViewCommand),
+            self.view_toolbar
+                .update(ToolbarCommand::XMessage(message))
+                .map(AppCommand::ToolbarCommand),
+        ])
     }
 
     fn view(&self) -> Element<'_, AppCommand> {
@@ -146,11 +170,16 @@ impl AppState {
 
     fn subscription(&self) -> Subscription<AppCommand> {
         Subscription::batch([
-            iced::event::listen_with(|event, _status, _id| match event {
+            iced::event::listen_with(|event, _status, id| match event {
+                // ESC key triggers CloseRequested via Task::done so that the
+                // same shutdown flow (broadcast + window::close) is shared.
                 iced::Event::Keyboard(keyboard::Event::KeyReleased {
                     key: keyboard::Key::Named(keyboard::key::Named::Escape),
                     ..
-                }) => Some(AppCommand::Esc),
+                }) => Some(AppCommand::Esc(id)),
+                iced::Event::Window(window::Event::CloseRequested) => {
+                    Some(AppCommand::XMessage(XMessage::CloseRequested(id)))
+                }
                 _ => None,
             }),
             self.view_main

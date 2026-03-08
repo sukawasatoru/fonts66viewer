@@ -15,3 +15,4 @@
  */
 
 pub mod font_list;
+pub mod preferences;

@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 
-pub use anyhow::{Context as _, Result as Fallible};
+pub use anyhow::{Context as _, Result as Fallible, bail};
 pub use tracing::{debug, error, info, instrument, span, trace, warn};

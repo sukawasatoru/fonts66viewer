@@ -29,7 +29,7 @@ pub struct Toolbar;
 
 impl Toolbar {
     pub fn new() -> Self {
-        Self::default()
+        Self
     }
 
     pub fn update(&mut self, command: ToolbarCommand) -> Task<ToolbarCommand> {
