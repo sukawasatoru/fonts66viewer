@@ -20,8 +20,7 @@ This guideline provides AI agents working on this codebase.
 ## Build, Test, and Development Commands
 
 - build: `cargo build`
-- unit test: `cargo test`
-- E2E/snapshot test: `cargo test -- --ignored`
+- unit test + End-to-End test + snapshot test: `cargo test -- --include-ignored`
 - snapshot の更新: `snapshots/` ディレクトリ内の該当する `.sha256` ファイルを削除してから `cargo test -- --ignored`
   を実行すると、新しいハッシュファイルが自動生成される
 - lint: `cargo clippy`
@@ -34,3 +33,7 @@ This guideline provides AI agents working on this codebase.
 - `XMessage` を使って app レイヤーから各 feature (view) にメッセージを配信する
 - app の `broadcast_xmessage` メソッドで全 view に XMessage を clone して配信する
 - feature 内部のコマンド（例: `SettingsViewCommand`）は app の `update` で `map` を使い `AppCommand` に変換する
+- 各 feature の `SendXMessage` バリアントは iced の `map` パターンを利用して app レイヤーに XMessage
+  を伝搬するための仕組み。  
+  `update` 内で `SendXMessage` を受け取り `Task::done(SendXMessage(data))` で再発行すると、app 側の `map` クロージャが
+  `AppCommand::XMessage` に変換する。自己再送に見えるが、`map` により必ず `AppCommand::XMessage` に変換されるため無限ループにはならない

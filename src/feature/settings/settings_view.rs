@@ -102,9 +102,7 @@ impl SettingsView {
                 }
 
                 Task::batch([
-                    Task::done(SettingsViewCommand::SendXMessage(XMessage::FontEntries(
-                        self.create_font_entries(),
-                    ))),
+                    send_xmessage(XMessage::FontEntries(self.create_font_entries())),
                     self.schedule_save_prefs(),
                 ])
             }
@@ -116,7 +114,7 @@ impl SettingsView {
                 }
 
                 Task::batch([
-                    Task::done(SettingsViewCommand::SendXMessage(XMessage::FontSize(size))),
+                    send_xmessage(XMessage::FontSize(size)),
                     self.schedule_save_prefs(),
                 ])
             }
@@ -134,33 +132,17 @@ impl SettingsView {
                         prefs.presets.first().map(|preset| preset.name.clone());
                 }
 
-                if let Some(selected_name) = &self.prefs_selected_name {
-                    for preset in &prefs.presets {
-                        if selected_name == &preset.name {
-                            self.font_size = preset.font_size;
-                            let enable_paths = preset
-                                .enable_paths
-                                .iter()
-                                .map(String::as_str)
-                                .collect::<HashSet<_>>();
-                            for item in self.font_list_item_map.values_mut() {
-                                item.enabled =
-                                    enable_paths.contains(item.font_entry.filepath.as_str());
-                            }
-                            break;
-                        }
-                    }
+                if let Some(selected_name) = &self.prefs_selected_name
+                    && let Some(preset) = prefs.presets.iter().find(|p| &p.name == selected_name)
+                {
+                    self.apply_preset(preset);
                 }
 
                 self.prefs = Some(prefs);
 
                 Task::batch([
-                    Task::done(SettingsViewCommand::SendXMessage(XMessage::FontSize(
-                        self.font_size,
-                    ))),
-                    Task::done(SettingsViewCommand::SendXMessage(XMessage::FontEntries(
-                        self.create_font_entries(),
-                    ))),
+                    send_xmessage(XMessage::FontSize(self.font_size)),
+                    send_xmessage(XMessage::FontEntries(self.create_font_entries())),
                 ])
             }
             SettingsViewCommand::SavePrefsRequested(version) => {
@@ -187,26 +169,20 @@ impl SettingsView {
                     })
                     .unwrap_or(Task::none())
             }
-            SettingsViewCommand::SettingsButtonClicked => {
-                Task::done(SettingsViewCommand::SendXMessage(XMessage::SettingsClose))
-            }
+            SettingsViewCommand::SettingsButtonClicked => send_xmessage(XMessage::SettingsClose),
             SettingsViewCommand::TextEditorAction(action) => {
                 let need_update = matches!(&action, text_editor::Action::Edit(_));
 
                 self.custom_text_content.perform(action);
 
                 if need_update {
-                    Task::done(SettingsViewCommand::SendXMessage(XMessage::CustomText(
-                        self.custom_text_content.text(),
-                    )))
+                    send_xmessage(XMessage::CustomText(self.custom_text_content.text()))
                 } else {
                     Task::none()
                 }
             }
             // Propagate to App layer via Task so it can be converted to AppCommand::XMessage.
-            SettingsViewCommand::SendXMessage(data) => {
-                Task::done(SettingsViewCommand::SendXMessage(data))
-            }
+            SettingsViewCommand::SendXMessage(data) => send_xmessage(data),
             SettingsViewCommand::Sink => Task::none(),
             SettingsViewCommand::XMessage(message) => match message {
                 // Save preferences synchronously on close. Since the app uses
@@ -291,7 +267,13 @@ impl SettingsView {
             .height(Length::Fill)
             .into()
     }
+}
 
+fn send_xmessage(msg: XMessage) -> Task<SettingsViewCommand> {
+    Task::done(SettingsViewCommand::SendXMessage(msg))
+}
+
+impl SettingsView {
     // Debounced save: increment save_prefs_version and wait
     // SAVE_PREFS_DEBOUNCE_MILLIS before firing SavePrefsRequested. Only the
     // request whose version matches the current save_prefs_version will
@@ -306,6 +288,18 @@ impl SettingsView {
             },
             move |_| SettingsViewCommand::SavePrefsRequested(version),
         )
+    }
+
+    fn apply_preset(&mut self, preset: &Preset) {
+        self.font_size = preset.font_size;
+        let enable_paths = preset
+            .enable_paths
+            .iter()
+            .map(String::as_str)
+            .collect::<HashSet<&str>>();
+        for item in self.font_list_item_map.values_mut() {
+            item.enabled = enable_paths.contains(item.font_entry.filepath.as_str());
+        }
     }
 
     fn selected_preset_mut(&mut self) -> Option<&mut Preset> {
