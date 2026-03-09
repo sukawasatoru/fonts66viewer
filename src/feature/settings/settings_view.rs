@@ -152,22 +152,19 @@ impl SettingsView {
                 // Reset to 0 to indicate no pending unsaved changes.
                 self.save_prefs_version = 0;
 
+                let Some(prefs) = self.prefs.clone() else {
+                    return Task::none();
+                };
                 let prefs_repo = self.prefs_repo.clone();
-                self.prefs
-                    .as_ref()
-                    .map(|prefs| {
-                        let prefs = prefs.clone();
-                        Task::perform(
-                            async move {
-                                match prefs_repo.save(prefs) {
-                                    Ok(_) => info!("saved preferences"),
-                                    Err(e) => warn!(?e, "failed to save preferences"),
-                                };
-                            },
-                            |_| SettingsViewCommand::Sink,
-                        )
-                    })
-                    .unwrap_or(Task::none())
+                Task::perform(
+                    async move {
+                        match prefs_repo.save(prefs) {
+                            Ok(_) => info!("saved preferences"),
+                            Err(e) => warn!(?e, "failed to save preferences"),
+                        };
+                    },
+                    |_| SettingsViewCommand::Sink,
+                )
             }
             SettingsViewCommand::SettingsButtonClicked => send_xmessage(XMessage::SettingsClose),
             SettingsViewCommand::TextEditorAction(action) => {
@@ -267,13 +264,7 @@ impl SettingsView {
             .height(Length::Fill)
             .into()
     }
-}
 
-fn send_xmessage(msg: XMessage) -> Task<SettingsViewCommand> {
-    Task::done(SettingsViewCommand::SendXMessage(msg))
-}
-
-impl SettingsView {
     // Debounced save: increment save_prefs_version and wait
     // SAVE_PREFS_DEBOUNCE_MILLIS before firing SavePrefsRequested. Only the
     // request whose version matches the current save_prefs_version will
@@ -319,6 +310,10 @@ impl SettingsView {
             .map(|item| item.font_entry.clone())
             .collect()
     }
+}
+
+fn send_xmessage(msg: XMessage) -> Task<SettingsViewCommand> {
+    Task::done(SettingsViewCommand::SendXMessage(msg))
 }
 
 fn settings_view_style(theme: &Theme) -> container::Style {
