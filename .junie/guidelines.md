@@ -9,6 +9,7 @@ This guideline provides AI agents working on this codebase.
 - Do: commit message は英語で書く
 - Do: コードを変更したらコードフォーマットと lint と unit test と E2E test を実行する
 - Do: テストにおける Fake 実装の方針は FontListDataSource のように trait と `#[cfg(test)]` による切り替えパターンを使用する
+- Do: iced 0.14 は macOS のシステム絵文字フォント (Apple Color Emoji) を読み込まないため、絵文字の代わりに SVG アイコンを使用する
 
 ## Project Structure and Module Organization
 
