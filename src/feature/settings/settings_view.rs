@@ -45,6 +45,7 @@ pub enum SettingsViewCommand {
     FontSizeUpdated(u32),
     PrefsLoaded(Preferences),
     PresetAddClicked,
+    PresetCopyClicked(String),
     PresetDeleteClicked(String),
     PresetMoveDown(String),
     PresetMoveUp(String),
@@ -148,6 +149,26 @@ impl SettingsView {
                     enable_paths: self.font_list_item_map.keys().cloned().collect(),
                 };
                 prefs.presets.push(new_preset.clone());
+                self.prefs_selected_name = Some(new_name);
+                self.apply_preset(&new_preset);
+
+                Task::batch([self.notify_preset_applied(), self.schedule_save_prefs()])
+            }
+            SettingsViewCommand::PresetCopyClicked(name) => {
+                let Some(prefs) = self.prefs.as_mut() else {
+                    return Task::none();
+                };
+                let Some(index) = prefs.presets.iter().position(|p| p.name == name) else {
+                    return Task::none();
+                };
+                let source = prefs.presets[index].clone();
+                let new_name = next_copy_name(&source.name, &prefs.presets);
+                let new_preset = Preset {
+                    name: new_name.clone(),
+                    font_size: source.font_size,
+                    enable_paths: source.enable_paths.clone(),
+                };
+                prefs.presets.insert(index + 1, new_preset.clone());
                 self.prefs_selected_name = Some(new_name);
                 self.apply_preset(&new_preset);
 
@@ -439,7 +460,11 @@ impl SettingsView {
                 let name = preset.name.clone();
                 preset_row = preset_row.push(
                     preset_action_btn(pencil_icon())
-                        .on_press(SettingsViewCommand::PresetRenameStarted(name)),
+                        .on_press(SettingsViewCommand::PresetRenameStarted(name.clone())),
+                );
+                preset_row = preset_row.push(
+                    preset_action_btn(copy_icon())
+                        .on_press(SettingsViewCommand::PresetCopyClicked(name)),
                 );
             }
 
@@ -569,6 +594,21 @@ fn settings_view_style(theme: &Theme) -> container::Style {
     background(bg)
 }
 
+fn next_copy_name(source_name: &str, presets: &[Preset]) -> String {
+    let existing: HashSet<&str> = presets.iter().map(|p| p.name.as_str()).collect();
+    let base = format!("{source_name} Copy");
+    if !existing.contains(base.as_str()) {
+        return base;
+    }
+    for i in 2.. {
+        let name = format!("{base} {i}");
+        if !existing.contains(name.as_str()) {
+            return name;
+        }
+    }
+    unreachable!()
+}
+
 fn next_preset_name(presets: &[Preset]) -> String {
     let existing: HashSet<&str> = presets.iter().map(|p| p.name.as_str()).collect();
     for i in 1.. {
@@ -593,6 +633,10 @@ fn preset_action_btn<'a>(
     .width(PRESET_ACTION_BTN_SIZE)
     .height(PRESET_ACTION_BTN_SIZE)
     .padding(0)
+}
+
+fn copy_icon<'a>() -> Element<'a, SettingsViewCommand> {
+    svg_icon("document-duplicate-solid.svg")
 }
 
 fn pencil_icon<'a>() -> Element<'a, SettingsViewCommand> {
@@ -1018,6 +1062,77 @@ mod tests {
 
         // Latest version triggers save and resets version.
         let _ = view.update(SettingsViewCommand::SavePrefsRequested(latest_version));
+        assert_eq!(view.save_prefs_version, 0);
+    }
+
+    #[test]
+    fn preset_copy_creates_duplicate_with_same_settings() {
+        let mut view = setup_with_prefs(two_presets());
+
+        let _ = view.update(SettingsViewCommand::PresetCopyClicked("Preset 1".into()));
+
+        let prefs = view.prefs.as_ref().unwrap();
+        assert_eq!(prefs.presets.len(), 3);
+        let copy = &prefs.presets[1];
+        assert_eq!(copy.name, "Preset 1 Copy");
+        assert_eq!(copy.font_size, 24);
+        assert_eq!(copy.enable_paths, vec!["./arial.ttf"]);
+    }
+
+    #[test]
+    fn preset_copy_inserts_after_source() {
+        let mut view = setup_with_prefs(two_presets());
+
+        let _ = view.update(SettingsViewCommand::PresetCopyClicked("Preset 1".into()));
+
+        let prefs = view.prefs.as_ref().unwrap();
+        assert_eq!(prefs.presets[0].name, "Preset 1");
+        assert_eq!(prefs.presets[1].name, "Preset 1 Copy");
+        assert_eq!(prefs.presets[2].name, "Preset 2");
+    }
+
+    #[test]
+    fn preset_copy_selects_new_preset() {
+        let mut view = setup_with_prefs(two_presets());
+
+        let _ = view.update(SettingsViewCommand::PresetCopyClicked("Preset 1".into()));
+
+        assert_eq!(view.prefs_selected_name.as_deref(), Some("Preset 1 Copy"));
+        assert_eq!(view.font_size, 24);
+        assert!(view.save_prefs_version > 0);
+    }
+
+    #[test]
+    fn preset_copy_generates_unique_copy_names() {
+        let mut view = setup_with_prefs(Preferences {
+            presets: vec![
+                Preset {
+                    name: "Preset 1".into(),
+                    font_size: 24,
+                    enable_paths: vec![],
+                },
+                Preset {
+                    name: "Preset 1 Copy".into(),
+                    font_size: 24,
+                    enable_paths: vec![],
+                },
+            ],
+        });
+
+        let _ = view.update(SettingsViewCommand::PresetCopyClicked("Preset 1".into()));
+
+        let prefs = view.prefs.as_ref().unwrap();
+        assert_eq!(prefs.presets[1].name, "Preset 1 Copy 2");
+    }
+
+    #[test]
+    fn preset_copy_noop_when_no_prefs() {
+        let mut view = create_settings_view();
+        assert!(view.prefs.is_none());
+
+        let _ = view.update(SettingsViewCommand::PresetCopyClicked("Preset 1".into()));
+
+        assert!(view.prefs.is_none());
         assert_eq!(view.save_prefs_version, 0);
     }
 }
